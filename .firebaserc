@@ -1,5 +1,5 @@
-examples/webapp
-node_modules/
-.git/
-*.log
-.DS_Store
+{
+  "projects": {
+    "default": "insystem-compute-ai"
+  }
+}
