@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Camera + YOLO + LLaVA</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #1a1a1a; color: #fff; }
+    #container { position: relative; width: 640px; margin: 20px auto; }
+    video { width: 100%; border: 2px solid #1A73E8; }
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    #status { margin-top: 10px; padding: 10px; background: #333; border-radius: 5px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🎥 Test YOLO + LLaVA Pipeline</h1>
+  <button onclick="startCamera()">Start Camera</button>
+  <button onclick="analyzeFrame()">Analyze Frame</button>
+  
+  <div id="container">
+    <video id="video" autoplay playsinline></video>
+    <canvas id="overlay"></canvas>
+  </div>
+  
+  <div id="status">Ready...</div>
+
+  <script>
+    const API_BASE = 'http://localhost:8080/api/v1';
+    let stream = null;
+
+    async function startCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { width: 640, height: 480 } 
+        });
+        document.getElementById('video').srcObject = stream;
+        document.getElementById('status').innerHTML = '✅ Camera started';
+      } catch (err) {
+        document.getElementById('status').innerHTML = '❌ Camera error: ' + err.message;
+      }
+    }
+
+    async function analyzeFrame() {
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('overlay');
+      const status = document.getElementById('status');
+
+      if (!video.videoWidth) {
+        status.innerHTML = '❌ Camera not ready';
+        return;
+      }
+
+      status.innerHTML = '⏳ Analyzing...';
+
+      // Capture frame
+      const captureCanvas = document.createElement('canvas');
+      captureCanvas.width = video.videoWidth;
+      captureCanvas.height = video.videoHeight;
+      const ctx = captureCanvas.getContext('2d');
+      ctx.drawImage(video, 0, 0);
+
+      // Convert to blob
+      const blob = await new Promise(resolve => {
+        captureCanvas.toBlob(resolve, 'image/jpeg', 0.8);
+      });
+
+      // Send to pipeline
+      const formData = new FormData();
+      formData.append('model', 'llava-v1.6-7b-q4');
+      formData.append('prompt', 'Describe what you see');
+      formData.append('image', blob, 'frame.jpg');
+      formData.append('max_tokens', 50);
+
+      try {
+        const start = Date.now();
+        const res = await fetch(`${API_BASE}/vision/pipeline`, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        const time = Date.now() - start;
+
+        console.log('Response:', data);
+
+        // Draw bounding boxes
+        if (data.detections && data.detections.length > 0) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const overlayCtx = canvas.getContext('2d');
+          overlayCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+          data.detections.forEach((det, idx) => {
+            const colors = ['#00FF00', '#FF00FF', '#00FFFF', '#FFFF00'];
+            const color = colors[idx % colors.length];
+
+            // Draw box
+            overlayCtx.strokeStyle = color;
+            overlayCtx.lineWidth = 3;
+            overlayCtx.strokeRect(
+              det.bbox.x1, det.bbox.y1,
+              det.bbox.x2 - det.bbox.x1,
+              det.bbox.y2 - det.bbox.y1
+            );
+
+            // Draw label
+            const label = `${det.class} ${(det.confidence * 100).toFixed(0)}%`;
+            overlayCtx.font = 'bold 16px Arial';
+            const textWidth = overlayCtx.measureText(label).width;
+
+            overlayCtx.fillStyle = color;
+            overlayCtx.fillRect(det.bbox.x1, det.bbox.y1 - 25, textWidth + 10, 25);
+
+            overlayCtx.fillStyle = '#000';
+            overlayCtx.fillText(label, det.bbox.x1 + 5, det.bbox.y1 - 7);
+          });
+        }
+
+        // Show results
+        status.innerHTML = `
+          <strong>✅ Analysis Complete (${time}ms)</strong><br>
+          <strong>Detections:</strong> ${data.detection_count || 0}<br>
+          <strong>YOLO:</strong> ${data.latency_ms?.yolo || 0}ms<br>
+          <strong>LLaVA:</strong> ${data.latency_ms?.llava || 0}ms<br>
+          <strong>Description:</strong> ${data.description || data.error || 'N/A'}
+        `;
+
+      } catch (err) {
+        status.innerHTML = '❌ Error: ' + err.message;
+        console.error('Error:', err);
+      }
+    }
+  </script>
+</body>
+</html>

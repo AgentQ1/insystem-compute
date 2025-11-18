@@ -1,0 +1,61 @@
+═══════════════════════════════════════════════════════════
+  HOW TO RUN DOWNLOADED MODELS - QUICK REFERENCE
+═══════════════════════════════════════════════════════════
+
+⚠️  IMPORTANT: .gguf files are MODEL FILES, not apps!
+    You can't "open" them - you need to RUN them with Python.
+
+📥 AFTER DOWNLOADING FROM HUB:
+
+   Step 1: Install Python library (one time only)
+   ─────────────────────────────────────────────
+   pip3 install llama-cpp-python
+
+
+   Step 2: Run your downloaded model
+   ─────────────────────────────────────────────
+   python3 run_downloaded_model.py ~/Downloads/tinyllama.gguf
+
+
+   Step 3: Chat with the model!
+   ─────────────────────────────────────────────
+   Type your questions and press Enter
+   Type 'exit' to quit
+
+═══════════════════════════════════════════════════════════
+
+💡 ALTERNATIVE: Use the REST API (easier!)
+
+   1. Start gateway:
+      cd gateway && python3 -m uvicorn gateway_py:app --port 8080
+
+   2. Open Playground in browser:
+      http://localhost:5500
+
+   3. Select model and type prompts - no terminal needed!
+
+═══════════════════════════════════════════════════════════
+
+📂 MODEL LOCATIONS:
+
+   Downloaded models:    ~/Downloads/tinyllama.gguf
+   Pre-installed models: models/tinyllama.gguf
+                        models/phi-2.gguf
+
+═══════════════════════════════════════════════════════════
+
+❓ TROUBLESHOOTING:
+
+   "No application can open this file"
+   → This is NORMAL! Run with Python (see Step 2 above)
+
+   "Module not found: llama_cpp"
+   → Run: pip3 install llama-cpp-python
+
+   "File not found"
+   → Check path: ls ~/Downloads/*.gguf
+
+═══════════════════════════════════════════════════════════
+
+📖 More help: See HOW_TO_RUN_MODELS.md
+

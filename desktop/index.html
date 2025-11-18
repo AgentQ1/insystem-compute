@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InSystem Compute</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="6" fill="#1A73E8"/>
+          <path d="M8 16L14 10L20 16L14 22L8 16Z" fill="white" opacity="0.9"/>
+          <path d="M14 10L20 16L24 12" stroke="white" stroke-width="2" opacity="0.9"/>
+        </svg>
+        <span>InSystem</span>
+      </div>
+
+      <div class="model-section">
+        <div class="section-header">
+          <h3>Active Model</h3>
+        </div>
+        <div id="model-info" class="model-info">
+          <p class="no-model">No model loaded</p>
+        </div>
+        <button id="load-model-btn" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8.5 1.5A.5.5 0 019 2v5h5a.5.5 0 010 1H9v5a.5.5 0 01-1 0V8H3a.5.5 0 010-1h5V2a.5.5 0 01.5-.5z"/>
+          </svg>
+          Load Model
+        </button>
+      </div>
+
+      <div class="settings-section">
+        <h4>Settings</h4>
+        <div class="setting-item">
+          <label>
+            Max Tokens
+            <input type="number" id="max-tokens" value="150" min="10" max="2048">
+          </label>
+        </div>
+        <div class="setting-item">
+          <label>
+            Temperature: <span id="temp-display">0.7</span>
+            <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+          </label>
+        </div>
+      </div>
+
+      <div class="status-footer">
+        <div class="status-indicator">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Connecting...</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="main-content">
+      <div class="chat-header">
+        <h1>Chat with AI</h1>
+        <p>Your AI runs 100% locally on your device</p>
+      </div>
+
+      <div id="chat-container" class="chat-container">
+        <div class="welcome-message">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <rect width="64" height="64" rx="12" fill="#E8F0FE"/>
+            <path d="M16 32L28 20L40 32L28 44L16 32Z" fill="#1A73E8"/>
+            <path d="M28 20L40 32L48 24" stroke="#1A73E8" stroke-width="3"/>
+          </svg>
+          <h2>Welcome to InSystem Compute</h2>
+          <p>Load a model to start chatting</p>
+          <button id="load-model-welcome" class="btn-primary">
+            Load GGUF Model
+          </button>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <textarea id="prompt-input" placeholder="Type your message..." rows="1"></textarea>
+        <button id="send-btn" class="send-btn" disabled>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 3l16 7-16 7V3zm2 11.5V9l8 3.5-8 2z"/>
+          </svg>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
