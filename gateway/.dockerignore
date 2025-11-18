@@ -1,0 +1,12 @@
+# Ignore model files (too large for container)
+*.gguf
+*.pt
+*.onnx
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS
+.DS_Store

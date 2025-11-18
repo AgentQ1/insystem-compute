@@ -1,10 +1,11 @@
 // InSystem Model Hub - Google AI Studio inspired UI
 // Configuration for deployment
 const CONFIG = {
-  // Change this to your backend URL when deploying
+  // Automatically detect backend
+  // For production: Set BACKEND_URL environment variable or update here
   API_BASE: window.location.hostname === 'localhost' 
     ? 'http://localhost:8080/api/v1'
-    : 'https://your-backend-url.com/api/v1', // Update this after deploying backend
+    : (window.BACKEND_URL || 'http://localhost:8080/api/v1'), // Will use local backend
   
   // For development
   DEV_MODE: window.location.hostname === 'localhost'
