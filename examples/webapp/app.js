@@ -1,11 +1,49 @@
 // InSystem Model Hub - Google AI Studio inspired UI
-const API_BASE = 'http://localhost:8080/api/v1';
+const API_BASE = window.location.hostname === 'localhost' 
+  ? 'http://localhost:8080/api/v1'
+  : 'http://localhost:8080/api/v1'; // Change this to your backend URL after deployment
+
 let allModels = [];
 let activeFilters = {
   task: 'all',
   platform: null,
   search: ''
 };
+
+// Demo data for when backend is offline
+const DEMO_MODELS = [
+  {
+    id: "tinyllama-1b-q4",
+    name: "TinyLlama 1.1B Chat (Q4)",
+    task: "text-generation",
+    arch: "llama",
+    quantization: "q4_k_m",
+    tags: ["gguf", "int4", "edge"],
+    targets: ["ios", "android", "rpi", "jetson"],
+    downloads: 1250,
+    files: [{filename: "tinyllama.gguf", size_bytes: 669376512, format: "gguf"}]
+  },
+  {
+    id: "phi-2-q4",
+    name: "Phi-2 2.7B (Q4)",
+    task: "text-generation",
+    arch: "phi",
+    tags: ["gguf", "reasoning"],
+    targets: ["ios", "android", "macos"],
+    downloads: 3420,
+    files: [{filename: "phi-2.gguf", size_bytes: 1610612736, format: "gguf"}]
+  },
+  {
+    id: "llava-v1.6-7b",
+    name: "LLaVA v1.6 7B (Q4)",
+    task: "vision",
+    arch: "llava",
+    tags: ["gguf", "vision", "multimodal"],
+    targets: ["desktop", "server"],
+    downloads: 892,
+    files: [{filename: "llava-v1.6-7b.Q4_K_M.gguf", size_bytes: 4033871872, format: "gguf"}]
+  }
+];
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
@@ -61,13 +99,19 @@ async function loadModels() {
   grid.innerHTML = '<div class="loading"><div class="spinner"></div>Loading models...</div>';
   
   try {
-    const res = await fetch(`${API_BASE}/hub/models`);
+    const res = await fetch(`${API_BASE}/hub/models`, { mode: 'cors' });
+    if (!res.ok) throw new Error('Backend offline');
     const data = await res.json();
     allModels = data.models || [];
     renderModels();
   } catch (err) {
-    grid.innerHTML = `<div class="loading">Failed to load models. Make sure the gateway is running on port 8080.</div>`;
-    console.error('Failed to load models:', err);
+    console.log('Backend offline, using demo data');
+    allModels = DEMO_MODELS;
+    renderModels();
+    // Show info message
+    const status = document.getElementById('gateway-status');
+    status.textContent = 'Demo Mode (Backend offline)';
+    status.parentElement.querySelector('.status-dot').style.background = '#F59E0B';
   }
 }
 
