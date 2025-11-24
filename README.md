@@ -12,7 +12,7 @@
 **License:** Dual License (Open Source + Commercial)  
 **Longevity:** Designed for 2000+ year compatibility with versioned APIs
 
-## 🚀 Quick Start - Run Models NOW
+##  Quick Start - Run Models NOW
 
 ```bash
 # Your models are already downloaded! (638MB + 1.7GB)
@@ -34,16 +34,16 @@ python3 examples/python/run_with_llamacpp.py
 - ✅ Test in interactive playground
 - ✅ Embed in iOS, Android, Raspberry Pi, ROS2 robots
 
-**🔷 NEW: Vision Model Available!**
+** NEW: Vision Model Available!**
 See **[VISION_MODEL_COMPLETE.md](VISION_MODEL_COMPLETE.md)** for complete guide to download, test, and embed LLaVA vision AI.
 
 See **[RUN_MODELS.md](RUN_MODELS.md)** for model running instructions.
 
-## 🌟 Overview
+##  Overview
 
 InSystem Compute is a multi-language, hardware-agnostic framework for deploying Large Language Models on edge devices, embedded systems, and distributed compute environments. Built with future-proof architecture using Rust, C/C++, Go, and more.
 
-## 🎯 Key Features
+##  Key Features
 
 - **Multi-Language Core**: Rust (safety), C/C++ (performance), Go (orchestration)
 - **Hardware Agnostic**: CPU, GPU, NPU, TPU, FPGA support
@@ -52,7 +52,7 @@ InSystem Compute is a multi-language, hardware-agnostic framework for deploying 
 - **Future-Proof**: Versioned APIs, backward compatibility guarantees
 - **Commercial Ready**: Enterprise SDK, SLA support, white-label options
 
-## 📊 Performance Benchmarks
+##  Performance Benchmarks
 
 | Device Type | Model Size | Latency | Memory | Throughput |
 |-------------|-----------|---------|--------|------------|
@@ -60,7 +60,7 @@ InSystem Compute is a multi-language, hardware-agnostic framework for deploying 
 | Edge (x86) | 3B params | 38ms | 1.5GB | 35 tok/s |
 | Desktop (GPU) | 7B params | 25ms | 4GB | 120 tok/s |
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -108,7 +108,7 @@ response = model.generate("Hello, world!", max_tokens=100)
 print(response)
 ```
 
-## 📦 Components
+##  Components
 
 - **Core Engine** (`/core`) - Rust-based inference runtime
 - **Compute Kernels** (`/kernels`) - C/C++ optimized operations
@@ -141,7 +141,7 @@ hub:
   registry: "../hub/registry.json"  # path used by gateway (HUB_REGISTRY env)
 ```
 
-## 💼 Commercial Licensing
+##  Commercial Licensing
 
 ### Open Source (Apache 2.0)
 - Free for personal and research use
@@ -154,7 +154,7 @@ hub:
 - Dedicated support team
 - Contact: sales@insystem-compute.com
 
-## 📚 Documentation
+##  Documentation
 
 - [API Reference](./docs/api.md)
 - [Integration Guide](./docs/integration.md)
@@ -162,7 +162,7 @@ hub:
 - [Hardware Optimization](./docs/hardware.md)
 - [Commercial SDK](./docs/commercial.md)
 
-## 🔐 Security
+##  Security
 
 - Memory-safe Rust core
 - Sandboxed execution
@@ -170,9 +170,9 @@ hub:
 - Audit logging
 - GDPR/CCPA compliant
 
-## 🌍 Compatibility
+##  Compatibility
 
-## 🗂️ Model Hub (MVP)
+##  Model Hub (MVP)
 
 Run the gateway and open the Hub UI:
 
@@ -210,11 +210,11 @@ Notes:
 - [ ] Federated learning
 - [ ] Neuromorphic hardware support
 
-## 🤝 Contributing
+##  Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-## 📄 Citation
+##  Citation
 
 ```bibtex
 @software{insystem_compute_2025,
@@ -225,7 +225,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 }
 ```
 
-## 📞 Support
+##  Support
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/AgentQ1/insystem-compute/issues)
 - **Documentation**: [Complete API docs](docs/API.md)
